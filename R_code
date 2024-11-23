@@ -6,6 +6,9 @@ library(tidyverse)
 
 otolith_jpg = list.files(path = "<location of jpg files>",
                          pattern = "<pattern/common name used>", full.names = TRUE)
+
+#jpgs must have desired otolith in all black with a white background
+
 otoliths = import_jpg(
   jpg.paths = otolith_jpg,
   auto.notcentered = TRUE,
