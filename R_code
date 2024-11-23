@@ -1,0 +1,46 @@
+library(stats)
+library(Momocs)
+library(jpeg)
+library(magick)
+library(tidyverse)
+
+otolith_jpg = list.files(path = "<location of jpg files>",
+                         pattern = "<pattern/common name used>", full.names = TRUE)
+otoliths = import_jpg(
+  jpg.paths = otolith_jpg,
+  auto.notcentered = TRUE,
+  fun.notcentered = NULL,
+  threshold = 0.5
+)
+
+otolith_coo <- Out(otoliths)
+
+loc <- <vector of qualitative feature to group otoliths by, ex location, species etc>
+
+otolith_coo$fac = data.frame(loc = loc)
+otolith_coo
+
+otolith_coo %>%
+  coo_center %>% coo_scale %>% coo_slidedirection("up") %T>%
+  print() %>% stack() #image of otoliths overlayed
+
+panel(o_coo, fac="loc", names=NULL) #image of otoliths arranged in grid
+
+coo_oscillo(o_coo[1], "efourier") #first round of elliptical fourier analysis
+
+Ptolemy(o_coo[1], nb.h = 20) #harmonics of otoliths, nb.h value can be changed depending on needs of the data set
+o.f <- efourier(o_coo, nb.h=20)
+o.f
+
+boxplot(o.f, drop=1) #boxplots of efourier analysis results
+
+o.p <- PCA(o.f)
+plot(o.p) #pca graphed with images of otoliths overlayed
+
+ht <- measure(o_coo, coo_area, coo_circularity, d(1, 3))
+ht$coe
+ht %>% PCA() %>% plot_PCA(~loc) #PCA plot accounting for qualitative filter/grouping
+
+o.f %>% MSHAPES() %>% coo_plot()
+o.ms <- MSHAPES(o.f, ~loc)
+Out(o.ms$shp) %>% panel(names=TRUE) #creates mean otolith for each qualitative group
