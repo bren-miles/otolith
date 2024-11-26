@@ -11,6 +11,6 @@ Can be used to:
 
 - Generate images from otolith files
 
-**Adding p-values and further statistical analysis in progress**
+**Adding further statistical analysis in progress**
 
 Made possible through the Momocs package: Bonhomme V, Picq S, Gaucherel C, Claude J (2014). Momocs: Outline Analysis Using R, volume 56 number 13. https://www.jstatsoft.org/v56/i13/. 
